@@ -1,0 +1,48 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>mitnadv</title>
+  </head>
+  <body>
+    <div>
+      <h2>detail mitnadv</h2>
+      <p>f_name: {{ mit.f_name }}</p>
+      <p>l_name: {{ mit.l_name }}</p>
+      <p>gander: {{ mit.get_gander_display }}</p>
+      <p>age: {{ mit.age }}</p>
+      <p>phone: {{ mit.phone }}</p>
+      <p>address: {{ mit.address }}</p>
+      <p>email: {{ mit.email }}</p>
+      <p>time start: {{ mit.time_start }}</p>
+
+      <p>
+        image: <img src="{{ mit.image.url }}" alt="" height="50" width="auto" />
+      </p>
+    </div>
+    <br />
+    <h2>other</h2>
+    <div>
+      <p>{{ mit.snif }}</p>
+      <p name= "num-month-pay">money_m: {{ mit.money_m }}</p>
+
+      <h2>time</h2>
+      <p>time start {{mit.time_start}}</p>
+      <p>time end {{mit.time_end}}</p>
+
+      <h2>pay for x mounth</h2>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <input type="number" name="num-month">
+        <input type="submit" value="submit">
+      </form>
+
+  
+      <p>{{data}}</p>
+      
+
+      <p></p>
+    </div>
+  </body>
+</html>
