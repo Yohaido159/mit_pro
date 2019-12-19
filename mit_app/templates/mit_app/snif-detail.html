@@ -1,0 +1,20 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>mitnadv</title>
+  </head>
+  <body>
+    <h1>snif detail</h1>
+    <p>{{snif.name}}</p>
+    <p>{{snif.address}}</p>
+    <p><img src="{{snif.image.url}}" alt="" height="300" width="auto"></p>
+
+    <h2>mitnadvim</h2>
+    {% for mit in mit_names  %}
+      {{mit.f_name}}
+      <br>
+    {% endfor %}
+  </body>
+</html>

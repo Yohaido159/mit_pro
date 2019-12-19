@@ -1,6 +1,13 @@
 from django.db import models
 import datetime
 
+class Gift(models.Model):
+    gift = models.CharField(max_length = 30)
+    use = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.gift
+
 class Mitnadv(models.Model):
     
     GENDER = (
@@ -25,18 +32,11 @@ class Mitnadv(models.Model):
     time_start = models.TimeField(blank = True, null =True)
     time_end = models.TimeField(blank = True, null =True)
 
+    gifts = models.ManyToManyField(Gift)
+    
+
     def __str__(self):
         return self.f_name
-
-    @property
-    def new_price(self, input_m=4):
-
-        money_m =int(self.money_m)
-        input_m =int(input_m)
-
-        newprice = money_m * input_m
-        return self.newprice
-
     
     
 class Snif(models.Model):
@@ -47,13 +47,14 @@ class Snif(models.Model):
     def __str__(self):
         return self.name
 
-class PayForMounthModel(models.Model):
-    
- #   pay_m = models.CharField(blank = True, null = True)
 
-    to = models.OneToOneField(Mitnadv ,on_delete=models.SET_NULL , blank = True, null = True)
-    total = models.CharField(max_length = 10,blank = True, null = True)
 
-    def __str__(self):
-        return self.pay_m.f_name
-    
+
+#    GIFTS = [
+#        ("TE","teeth"),
+#        ("VE","vacation"),
+#        ("CL","clothes"),
+#        ("CO","course"),
+#    ]
+#
+#    gift = models.CharField(max_length = 2, choices = GIFTS, default = "CL")
