@@ -4,17 +4,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>mitnadv</title>
+    <style>
+      table,
+      th,
+      td {
+        border: solid 1px black;
+      }
+    </style>
   </head>
   <body>
     <h1>snif detail</h1>
-    <p>{{snif.name}}</p>
-    <p>{{snif.address}}</p>
-    <p><img src="{{snif.image.url}}" alt="" height="300" width="auto"></p>
+    <p>{{ snif.name }}</p>
+    <p>{{ snif.address }}</p>
+    <p><img src="{{ snif.image.url }}" alt="" height="300" width="auto" /></p>
 
     <h2>mitnadvim</h2>
-    {% for mit in mit_names  %}
-      {{mit.f_name}}
-      <br>
+    {% for mit in mit_names %}
+    {{ mit.f_name }}
+    <br />
     {% endfor %}
+
+    <h2>sum for month</h2>
+    {{ sum_for_month }}
+    <br /><br />
+    <h2>sum for year</h2>
+    {{ sum_for_year }}
+
+    <h2>sum gift to be given</h2>
+    <table>
+      <tr>
+        <th>gift</th>
+        <th>sum</th>
+      </tr>
+      {% for key, value in gifts_dic.items %}
+      <tr>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td>sum: </td>
+        <td>{{sum_gifts}} </td>
+      </tr>
+    </table>
   </body>
 </html>

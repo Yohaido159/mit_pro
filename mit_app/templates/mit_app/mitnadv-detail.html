@@ -28,46 +28,42 @@
       <p>money_m: {{ mit.money_for_month }}</p>
 
       <h2>time</h2>
-      <p>time start {{mit.time_start}}</p>
-      <p>time end {{mit.time_end}}</p>
+      <p>time start {{ mit.time_start }}</p>
+      <p>time end {{ mit.time_end }}</p>
 
       <h2>pay for x mounth</h2>
       <form action="" method="POST">
         {% csrf_token %}
-        <input type="number" name="num-month">
-        <input type="submit" value="submit">
+        <input type="number" name="num-month" />
+        <input type="submit" value="submit" />
       </form>
 
-      <p>{{money_calc}}</p>
+      <p>{{ money_calc }}</p>
 
       <h2>pay for year</h2>
-      <p>{{money_for_year}}</p>
+      <p>{{ money_for_year }}</p>
 
-      <h2>Gifts to give</h2>
-<form method="POST">
-      {% for gift in mit.gifts.all  %}
+      <h2>Gifts to use</h2>
+      <form method="POST">
+        {% for gift in mit.gifts.all %}
 
-       <input type="checkbox" name="check" value="{{gift}}" >
-      
-       {{gift}}
-      <br>
-      
-      {% endfor %}
-      <input type="submit">
-      {% csrf_token %}
-</form>      
-      
-      <h3>mitnadv use:</h3>
-      {% for check in check_boxs  %}
+        <input type="checkbox" name="check" value="{{ gift }}" />
 
-      {% if None %}
-        false
-      {% endif %}
-      
-        <p>{{check}}</p>
+        {{ gift }}
         
-      {% endfor %}
+        <br />
 
+        {% endfor %}
+        <input type="submit" />
+        {% csrf_token %}
+      </form>
+
+      <h3>mitnadv use:</h3>
+      {% for check in check_boxs %} {% if None %} false {% endif %}
+
+      <p>{{ check }}</p>
+
+      {% endfor %}
     </div>
   </body>
 </html>

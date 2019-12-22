@@ -1,0 +1,39 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>mitnadv</title>
+    <style>
+      div {
+        border: solid 1px;
+        max-width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    {% for mit in all_mit %}
+      
+    <div>
+      <h3>name:{{mit.f_name}} </h3>
+      <img src="{{mit.image.url}}" alt="" height="100" width="auto">
+      
+    </div>
+    <br>
+    {% endfor %}
+
+    <div>
+      <h2>pay for mounth for all:</h2> <p> {{sum_month}}</p>
+      <h2>pay for mounth for year: </h2> <p>{{sum_year}}</p>
+    </div>
+
+    <form action="{% url 'mitnadvim-list' %}" method="GET">
+      <p>filter: <input type="text" name= "filter" value="{{filter}}"></p>
+      <p>order by: <input type="text" name= "orderby" value="{{orderby}}"></p>
+      <input type="submit" value="submit">
+      
+    </form>
+
+
+  </body>
+</html>
