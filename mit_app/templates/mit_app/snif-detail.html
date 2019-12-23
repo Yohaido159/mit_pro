@@ -60,6 +60,26 @@
     <h3>back to list</h3>
     <a href="{% url 'snifs-list' %}">to list</a>
 
+          <h3>send sms and mail</h3>
 
+      <form method="POST">
+        <input type="text" name="subject">
+        <br>
+            <textarea name="message" cols="30" rows="10"></textarea>
+            <input type="submit" value="sumbit">
+            {% csrf_token %}
+      </form>    
+      
+      {% comment %}
+send_mail(
+
+  'subject',
+   'body of the message',
+    'yohaido159@gmail.com',
+     ['yohai159951@gmail.com',]
+  )
+
+
+{% endcomment %}
   </body>
 </html>

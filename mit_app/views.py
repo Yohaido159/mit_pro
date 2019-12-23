@@ -12,6 +12,10 @@ from django.db.models import Count
 
 from django.urls import reverse_lazy
 
+from django.core.mail import send_mail
+
+
+
 class MitnadvCreateView(CreateView):
     
     model = Mitnadv
@@ -60,7 +64,6 @@ class MitnadvDetailView(DetailView):
             "check_boxs" : check_boxs,
             "mit":obj
             }
-        #assert False
 
         return render(request, "mit_app/mitnadv-detail.html" ,content)
 
@@ -169,6 +172,57 @@ class SnifDetailView(DetailView):
     template_name = "mit_app/snif-detail.html"
     context_object_name = "snif"
 
+    def post(self, request, *args, **kwargs):
+
+        
+
+        def insert_mit_name():
+            mitnadv = Mitnadv.objects.all()
+            snif = insert_snif()
+            mit_names = mitnadv.filter(snif = snif)
+            return mit_names
+
+        def insert_snif():
+            snif = Snif.objects.get(pk = kwargs["pk"])
+            return snif
+
+        def get_list_mail_to_mitnadvim():
+            list_mit_mail = []
+            mits = insert_mit_name()
+            for mit in mits:
+                mail = mit.email
+                list_mit_mail.append(mail)
+            return list_mit_mail
+
+        list_mail_to_mits = get_list_mail_to_mitnadvim()
+        snif = insert_snif()
+        subject = self.request.POST.get("subject" , 0)
+        message = self.request.POST.get("message" , 0)
+        if message == "":
+            message = "default - nothing to see here, hi mayan :) send from django"
+
+        #send_mail(
+        #    subject,
+        #    massage,
+        #    "yohaido159@gmail.com",
+        #    list_mail_to_mits
+        #)
+
+
+
+
+
+        content = {
+            "snif":snif,
+        }
+
+        return render(request, "mit_app/snif-detail.html", content)
+
+
+        
+
+        
+
     def get(self, request, *args,**kwargs):
 
 
@@ -194,7 +248,8 @@ class SnifDetailView(DetailView):
             field_name = "gifts"
             gifts_dic = {}
             sum = 0
-            quertset_count = Mitnadv.objects.values(field_name).order_by(field_name).annotate(the_count=Count(field_name))
+            quertset_count = mitnadvim.values(field_name).order_by(field_name).annotate(the_count=Count(field_name))
+
             for each in quertset_count:
                 if each["gifts"] == 1:
                     gift_name = "teeth"
@@ -204,6 +259,7 @@ class SnifDetailView(DetailView):
                     gift_name = "clothes"
                 elif each["gifts"] == 4:
                     gift_name = "courses"
+
                 sum += int(each["the_count"])
                 
                 gifts_dic[gift_name] = each["the_count"]
@@ -219,6 +275,8 @@ class SnifDetailView(DetailView):
             pre = Snif.objects.filter(pk__lt = kwargs["pk"]).order_by("pk").last()
             return pre
 
+
+
         next_snif = get_next_snif()
         pre_snif = get_pre_snif()
 
@@ -229,6 +287,10 @@ class SnifDetailView(DetailView):
         sum_for_year = sum_for_month * 12
 
         gifts_dic, sum_gifts = sum_gift_given()
+
+
+
+
 
         content = {
             "mit_names":mit_names,
@@ -282,7 +344,6 @@ class SnifListView(ListView):
             for snif in snifs:
                 mits = snif.mitnadv_set.all()
                 mit_dict[snif.name] = mits
-#            assert False
             return mit_dict
         
         mit_dict = mitnadvim_in_snif()

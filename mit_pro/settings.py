@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third
+
+    "smsish",
 ]
 
 MIDDLEWARE = [
@@ -123,3 +126,14 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST_PASSWORD = "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"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
