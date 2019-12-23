@@ -15,9 +15,10 @@
     {% for mit in all_mit %}
       
     <div>
-      <h3>name:{{mit.f_name}} </h3>
+      <h3><a href="/mit/{{mit.id}}">name:{{mit.f_name}} </a></h3>
       <img src="{{mit.image.url}}" alt="" height="100" width="auto">
-      
+      <br>
+      <a href="/snif/{{mit.snif.id}}">snif: {{mit.snif}}</a>
     </div>
     <br>
     {% endfor %}

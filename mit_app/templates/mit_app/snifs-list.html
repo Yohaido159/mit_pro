@@ -15,10 +15,18 @@
     {% for snif in all_snifs %}
       
     <div>
-      <h3>name:{{snif.name}} </h3>
+      <h3><a href="/snif/{{snif.id}}">name:{{snif.name}}</a>   </h3>
       <img src="{{snif.image.url}}" alt="" height="100" width="auto">
-      
-    </div>
+      <p>mitnadvim:</p>
+      {% for key, value in mit_dict.items %}
+        {% if key == snif.name %} 
+          {% for mit in value %}
+           <a href="/mit/{{mit.id}}"><p>{{mit.f_name}}</p></a>
+
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      </div>
     <br>
     {% endfor %}
 
@@ -28,12 +36,13 @@
         {% for snif in snifs  %}
         <option value="{{snif.name}}" >{{snif.name}}</option>
         {% endfor %}
+
       </select>
       <input type="submit" value="submit">
     </form>
 
     <h3>add snif</h3>
-    <a href="{% url 'mitnadv-create'%}">add</a>
+    <a href="{% url 'snif-create'%}">add</a>
 
 
 
