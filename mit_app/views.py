@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from django.db.models import Count
 
+from django.urls import reverse_lazy
+
 class MitnadvCreateView(CreateView):
     
     model = Mitnadv
@@ -24,15 +26,23 @@ class MitnadvCreateView(CreateView):
         "email",
         "image",
         "snif",
-        "money_m"]
+        "time_start",
+        "time_end",
+        "gifts",
+        "money_for_month"]
 
     context_object_name = "mit"
+    
+    def get_success_url(self):
+        return reverse_lazy("mitnadv-detail", kwargs={"pk" : self.object.pk})
+
     
 
 class MitnadvDetailView(DetailView):
     model = Mitnadv
     template_name = "mit_app/mitnadv-detail.html"
     context_object_name = "mit"
+
 
     def post(self ,request, **kwargs):
 
@@ -57,11 +67,30 @@ class MitnadvDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
 
+        def get_next_mit():
+            next = Mitnadv.objects.filter(pk__gt = kwargs["pk"]).order_by("pk").first()
+            return next
+
+        def get_pre_mit():
+            pre = Mitnadv.objects.filter(pk__lt = kwargs["pk"]).order_by("pk").last()
+            return pre
+
+        next_mit = get_next_mit()
+        pre_mit = get_pre_mit()
+
+
         obj = Mitnadv.objects.get(pk = kwargs["pk"])
         money_for_month = obj.money_for_month
         money_for_year =int(money_for_month) * 12
+        
+        content = {
+            "money_for_year":money_for_year,
+            "next_mit":next_mit,
+            "pre_mit":pre_mit,
+            "mit":obj,
+        }
 
-        return render(request, "mit_app/mitnadv-detail.html" , {"money_for_year":money_for_year ,"mit":obj})
+        return render(request, "mit_app/mitnadv-detail.html" , content)
 
 class SnifDetailView(DetailView):
 
@@ -70,6 +99,7 @@ class SnifDetailView(DetailView):
     context_object_name = "snif"
 
     def get(self, request, *args,**kwargs):
+
 
         def insert_mit_name():
             mitnadv = Mitnadv.objects.all()
@@ -110,6 +140,17 @@ class SnifDetailView(DetailView):
             return gifts_dic, sum
 
 
+        def get_next_snif():
+            next = Snif.objects.filter(pk__gt = kwargs["pk"]).order_by("pk").first()
+            return next
+
+        def get_pre_snif():
+            pre = Snif.objects.filter(pk__lt = kwargs["pk"]).order_by("pk").last()
+            return pre
+
+        next_snif = get_next_snif()
+        pre_snif = get_pre_snif()
+
         mit_names = insert_mit_name()
         snif = insert_snif()
 
@@ -124,9 +165,10 @@ class SnifDetailView(DetailView):
             "sum_for_year":sum_for_year,
             "gifts_dic":gifts_dic,
             "sum_gifts":sum_gifts,
+            "pre_snif":pre_snif,
+            "next_snif":next_snif,
             "snif":snif,
         }
-        #assert False
         return render(request, "mit_app/snif-detail.html", content)
    
 
@@ -135,15 +177,20 @@ class MitnadviListView(ListView):
     model = Mitnadv
     context_object_name = "all_mit"
     template_name = "mit_app/mitnadvim-list.html"
-    
-    def get_queryset(self):
-        filter_val = self.request.GET.get("filter", "jerusalem-1")
-        order = self.request.GET.get("orderby", "f_name")
+    snifs = Snif.objects.all()
 
-        new_context = Mitnadv.objects.filter(
-            snif__name = filter_val
-        ).order_by(order)
-        return new_context
+    def get_queryset(self):
+        filter_val = self.request.GET.get("filter", "all")
+        order = self.request.GET.get("orderby", "f_name")
+        if filter_val == "all":
+            return Mitnadv.objects.all()
+        else:
+            new_context = Mitnadv.objects.filter(
+                snif__name = filter_val
+            ).order_by(order)
+            return new_context
+        
+        
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -172,7 +219,48 @@ class MitnadviListView(ListView):
         content = {
             "sum_month":sum_month,
             "sum_year":sum_year,
+            "snifs":self.snifs,
             "all_mit":obj,
         }
+        
         return render(request, "mit_app/mitnadvim-list.html", content)
+
+class SnifListView(ListView):
+
+    model = Snif
+    context_object_name = "all_snifs"
+    template_name = "mit_app/snifs-list.html"
+    snifs = Snif.objects.all()
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get("filter", "all")
+        order = self.request.GET.get("orderby", "name")
+
+        if filter_val == "all":
+            return Snif.objects.all()
+        else:
+            new_context = Snif.objects.filter(
+                name = filter_val
+            ).order_by(order)
+            return new_context
+        
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = self.request.GET.get("filter", "all")
+        context["orderby"] = self.request.GET.get("orderby", "name")
+        return context
+    
+
+    def get(self, request, *args, **kwargs):
+
+        obj  = self.get_queryset()
+            
+        content = {
+            "all_snifs":self.snifs,
+            "all_snifs":obj,
+        }
+        
+        return render(request, "mit_app/snifs-list.html", content)
+
 

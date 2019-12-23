@@ -64,6 +64,17 @@
       <p>{{ check }}</p>
 
       {% endfor %}
+
+      <h3>next or pre mit</h3>
+      {% if pre_mit %}
+      <a><a href="/mit/{{pre_mit.pk}}">pre</a></a>
+      {% endif %}
+
+      {% if next_mit %}
+      <a><a href="/mit/{{next_mit.pk}}">next</a></a>
+      {% endif %}
+
+
     </div>
   </body>
 </html>

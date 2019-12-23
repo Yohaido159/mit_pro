@@ -12,22 +12,17 @@
     </style>
   </head>
   <body>
-    {% for mit in all_mit %}
+    {% for snif in all_snifs %}
       
     <div>
-      <h3>name:{{mit.f_name}} </h3>
-      <img src="{{mit.image.url}}" alt="" height="100" width="auto">
+      <h3>name:{{snif.name}} </h3>
+      <img src="{{snif.image.url}}" alt="" height="100" width="auto">
       
     </div>
     <br>
     {% endfor %}
 
-    <div>
-      <h2>pay for mounth for all:</h2> <p> {{sum_month}}</p>
-      <h2>pay for mounth for year: </h2> <p>{{sum_year}}</p>
-    </div>
-
-    <form action="{% url 'mitnadvim-list' %}" method="GET"> 
+    <form action="{% url 'snifs-list' %}" method="GET"> 
       <select name="filter">
         <option value="all">all</option>
         {% for snif in snifs  %}
@@ -37,7 +32,7 @@
       <input type="submit" value="submit">
     </form>
 
-    <h3>add mitnadv</h3>
+    <h3>add snif</h3>
     <a href="{% url 'mitnadv-create'%}">add</a>
 
 

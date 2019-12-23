@@ -47,5 +47,15 @@
         <td>{{sum_gifts}} </td>
       </tr>
     </table>
+
+    <h3>next or pre snif</h3>
+    {% if pre_snif %}
+    <a><a href="/snif/{{pre_snif.pk}}">pre</a></a>
+    {% endif %}
+
+    {% if next_snif %}
+    <a><a href="/snif/{{next_snif.pk}}">next</a></a>
+    {% endif %}
+
   </body>
 </html>
